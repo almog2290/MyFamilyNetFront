@@ -16,7 +16,7 @@ import DescriptionTwoToneIcon from '@mui/icons-material/DescriptionTwoTone';
 
 
 
-// ==============================|| DEFAULT DASHBOARD ||============================== //
+// ==============================|| DEFAULT CATALOG ||============================== //
 
 const Catalog = () => {
   const {isAuthenticated} = useContext(AuthContext);
