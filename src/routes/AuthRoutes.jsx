@@ -4,6 +4,10 @@ import {lazy} from 'react';
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
 
+
+// Catalog routing
+const Catalog = Loadable(lazy(() => import('views/catalog')));
+
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard')));
 
@@ -34,7 +38,13 @@ const AuthRoutes = {
     {
       path: '/',
       element: (
-          <DashboardDefault />
+        <Catalog />
+      )
+    },
+    {
+      path: '/dashboard',
+      element: (
+        <DashboardDefault />
       )
     },
     {
