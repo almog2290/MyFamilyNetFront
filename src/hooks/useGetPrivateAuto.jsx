@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAxiosPrivate } from "./useAxiosPrivate";
 
-export const useAxiosGet = (url) => {
+export const useGetPrivateAuto = (url) => {
   const [data, setData] = useState(null);
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState(null);

@@ -8,6 +8,12 @@ import Loadable from 'ui-component/Loadable';
 // Catalog routing
 const Catalog = Loadable(lazy(() => import('views/catalog')));
 
+//User Creation Details routing
+const UserDetailsCard = Loadable(lazy(() => import('views/pages/UserDetailsCard')));
+
+// Page Creation routing
+const CreatePageCard = Loadable(lazy(() => import('views/pages/CreatePageCard')));
+
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard')));
 
@@ -57,6 +63,14 @@ const AuthRoutes = {
         { 
           path: 'register',
           element: <AuthRegisterKeycloak />
+        },
+        {
+          path: 'user-details',
+          element: <UserDetailsCard />
+        },
+        {
+          path: 'create-page',
+          element: <CreatePageCard />
         }
       ]
     },

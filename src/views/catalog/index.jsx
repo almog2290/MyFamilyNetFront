@@ -19,7 +19,7 @@ import DescriptionTwoToneIcon from '@mui/icons-material/DescriptionTwoTone';
 // ==============================|| DEFAULT CATALOG ||============================== //
 
 const Catalog = () => {
-  const {isAuthenticated} = useContext(AuthContext);
+  const {keycloak,isAuthenticated} = useContext(AuthContext);
   const {data : pages , isLoading, error} = useFetch('/social/public/pages')
 
 
@@ -45,6 +45,8 @@ const Catalog = () => {
               <PageCreationCard 
                 {...{
                   isLoading: isLoading,
+                  userId: keycloak?.subject,
+                  fullName : keycloak?.idTokenParsed?.name
                 }}
                 />
               </Grid>

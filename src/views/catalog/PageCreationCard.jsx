@@ -1,3 +1,6 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useGetPrivate } from 'hooks/useGetPrivate';
 import PropTypes from 'prop-types';
 
 // material-ui
@@ -18,6 +21,12 @@ import TotalIncomeCard from 'ui-component/cards/Skeleton/TotalIncomeCard';
 // assets
 import PostAddTwoToneIcon from '@mui/icons-material/PostAddTwoTone';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { ConsoleView } from 'react-device-detect';
+import { useContext, useEffect } from 'react';
+import { is } from 'immutable';
+import { Co2Sharp } from '@mui/icons-material';
+
+
 
 // styles
 const CardWrapper = styled(MainCard)(({ theme }) => ({
@@ -49,8 +58,29 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 // ==============================|| DASHBOARD - TOTAL INCOME DARK CARD ||============================== //
 
-const PageCreationCard = ({ isLoading }) => {
+const PageCreationCard = ({ isLoading , userId , fullName }) => {
   const theme = useTheme();
+  const navigate  = useNavigate();
+  const [isPending, setIsPending] = useState(false);
+  const [error, setError] = useState(null);
+  const { fetchData , data } = useGetPrivate();
+  
+
+  const handleAddPage = async () => {
+    await fetchData(`/social/users/${userId}`, setIsPending , setError);
+  }; 
+
+  useEffect(() => {
+
+    if(!isPending && data){
+      navigate('/pages/create-page')
+    }
+
+    if(!isPending && error){
+      navigate(`/pages/user-details/?name=${fullName}`);
+    }
+
+  }, [isPending,error]);
 
   return (
     <>
@@ -87,7 +117,13 @@ const PageCreationCard = ({ isLoading }) => {
                     </Typography>
                   }
                 />
-                <Button variant="contained" color="secondary" endIcon={<AddCircleIcon />} sx={{ ml: 2 }}>
+                <Button 
+                  variant="contained" 
+                  color="secondary" 
+                  endIcon={<AddCircleIcon />} 
+                  sx={{ ml: 2 }}
+                  onClick={handleAddPage}
+                >
                   Add
                 </Button>
               </ListItem>
@@ -100,7 +136,9 @@ const PageCreationCard = ({ isLoading }) => {
 };
 
 PageCreationCard.propTypes = {
-  isLoading: PropTypes.bool
+  isLoading: PropTypes.bool,
+  userId: PropTypes.string,
+  fullName: PropTypes.string
 };
 
 export default PageCreationCard;
