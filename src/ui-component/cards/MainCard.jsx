@@ -31,6 +31,7 @@ const MainCard = React.forwardRef(
       shadow,
       sx = {},
       title,
+      subTitle,
       ...others
     },
     ref
@@ -49,8 +50,34 @@ const MainCard = React.forwardRef(
         }}
       >
         {/* card header and action */}
-        {!darkTitle && title && <CardHeader sx={headerSX} title={title} action={secondary} />}
-        {darkTitle && title && <CardHeader sx={headerSX} title={<Typography variant="h3">{title}</Typography>} action={secondary} />}
+        {!darkTitle && title && 
+        <CardHeader 
+          sx={headerSX}
+          title={
+            <>
+              <Typography variant="h3">{title}</Typography>
+              {subTitle && <Typography variant="caption" display="block" >
+                {subTitle}
+              </Typography>}
+            </>
+          } 
+          action={secondary} 
+        />
+        }
+        {darkTitle && title && 
+        <CardHeader 
+          sx={headerSX} 
+          title={
+            <>
+              <Typography variant="h3">{title}</Typography>
+              {subTitle &&<Typography variant="caption" display="block" >
+                {subTitle}
+              </Typography>}
+            </>
+          } 
+          action={secondary} 
+        />
+        }
 
         {/* content & header divider */}
         {title && <Divider />}
@@ -78,7 +105,8 @@ MainCard.propTypes = {
   secondary: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object]),
   shadow: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   sx: PropTypes.object,
-  title: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object])
+  title: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object]),
+  subTitle: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object])
 };
 
 export default MainCard;

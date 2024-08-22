@@ -14,6 +14,9 @@ const UserDetailsCard = Loadable(lazy(() => import('views/pages/UserDetailsCard'
 // Page Creation routing
 const CreatePageCard = Loadable(lazy(() => import('views/pages/CreatePageCard')));
 
+//Page Component routing
+const Page = Loadable(lazy(() => import('views/page')));
+
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard')));
 
@@ -51,6 +54,12 @@ const AuthRoutes = {
       path: '/dashboard',
       element: (
         <DashboardDefault />
+      )
+    },
+    {
+      path: '/page',
+      element: (
+        <Page />
       )
     },
     {

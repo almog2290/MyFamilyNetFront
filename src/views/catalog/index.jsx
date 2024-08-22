@@ -33,7 +33,7 @@ const Catalog = () => {
                 <PageCard 
                   {...{
                     isLoading: isLoading,
-                    page_name: page.name,
+                    page: page,
                     label: page.description,
                     icon: <DescriptionTwoToneIcon fontSize="inherit" />
                   }}

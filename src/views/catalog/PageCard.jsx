@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 // material-ui
@@ -49,8 +50,14 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 // ==============================|| Catalog - PAGE CARD ||============================== //
 
-const PageCard = ({ isLoading, page_name, icon, label }) => {
+const PageCard = ({ isLoading, page, icon}) => {
   const theme = useTheme();
+  const navigate = useNavigate();
+
+  const handleShow = () => {
+    //navigate to page and props page
+    navigate(`/page?id=${page.id}&name=${page.name}&desc=${page.description}`);
+  };
 
   return (
     <>
@@ -68,7 +75,7 @@ const PageCard = ({ isLoading, page_name, icon, label }) => {
                       ...theme.typography.commonAvatar,
                       ...theme.typography.largeAvatar,
                       bgcolor: 'warning.light',
-                      color: label === 'Meeting attends' ? 'error.dark' : 'warning.dark'
+                      color: page?.description === 'Meeting attends' ? 'error.dark' : 'warning.dark'
                     }}
                   >
                     {icon}
@@ -76,14 +83,14 @@ const PageCard = ({ isLoading, page_name, icon, label }) => {
                 </ListItemAvatar>
                 <ListItemText
                   sx={{ py: 0, mt: 0.45, mb: 0.45 }}
-                  primary={<Typography variant="h4">{page_name}</Typography>}
+                  primary={<Typography variant="h4">{page?.name}</Typography>}
                   secondary={
                     <Typography variant="subtitle2" sx={{ color: 'grey.500', mt: 0.5 }}>
-                      {label}
+                      {page?.description}
                     </Typography>
                   }
                 />
-                <Button variant="contained" color="warning" endIcon={<PreviewIcon />} sx={{ ml: 2 }}>
+                <Button variant="contained" color="warning" endIcon={<PreviewIcon />} sx={{ ml: 2 }} onClick={handleShow}>
                     Show
                 </Button>
               </ListItem>
@@ -97,8 +104,7 @@ const PageCard = ({ isLoading, page_name, icon, label }) => {
 
 PageCard.propTypes = {
   icon: PropTypes.object,
-  label: PropTypes.string,
-  page_name: PropTypes.string,
+  page: PropTypes.object,
   isLoading: PropTypes.bool
 };
 
