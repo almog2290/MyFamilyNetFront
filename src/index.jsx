@@ -1,4 +1,6 @@
 import { createRoot } from 'react-dom/client';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
 
 // third party
 import { configureStore } from '@reduxjs/toolkit';
@@ -36,10 +38,14 @@ const store = configureStore({ reducer });
 
 // ==============================|| REACT DOM RENDER  ||============================== //
 
+const queryClient = new QueryClient();
+
 root.render(
   <Provider store={store}>
     <AuthProvider>
-      <App />
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
     </AuthProvider>
   </Provider>
 );
