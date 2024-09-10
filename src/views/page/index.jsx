@@ -5,19 +5,18 @@ import { useAxiosPrivate } from "hooks/useAxiosPrivate";
 
 
 // material-ui
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import Divider from '@mui/material/Divider';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
+import Alert from '@mui/material/Alert';
+import { Grid } from '@mui/material';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import SubCard from 'ui-component/cards/SubCard';
-import { Grid } from '@mui/material';
 import  PostLine  from './PostLine';
+import CommentList from './CommentList';
+import PostCreationCard from './PostCreationCard';
 
 
 function Page() {
@@ -37,6 +36,7 @@ function Page() {
             return response.data;
         }
     });
+    
 
     return (
         <>
@@ -45,17 +45,28 @@ function Page() {
             subTitle={desc? desc : "Information about the page"}
         >
         <Grid container direction="column" spacing={1}>        
-                {isPending && <div>Loading...</div>}
-                {isError && <div>Error fetching data</div>}
+                {isPending &&
+                    <Box sx={{ width: '100%' }}>
+                        <LinearProgress />
+                    </Box> 
+                }
+                {isError &&
+                    <Alert severity="error">Error fetching data</Alert> 
+                }
                 {posts && posts.map(post => (
                     <Grid item key={post.id}>
                         <SubCard title={<PostLine postData={post}/>}>
                             <Typography variant="overline">
-                                {"Comments"}
+                                <CommentList postId={post.id}/>
                             </Typography>
                         </SubCard>
                     </Grid>
                 ))}
+            {!isPending &&
+                <Grid item key={'card-creation'}>
+                    <PostCreationCard pageId={id} />
+                </Grid>
+            }
         </Grid>
     </MainCard>
     </>
