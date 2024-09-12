@@ -3,7 +3,7 @@ import {lazy} from 'react';
 // project imports
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
-
+import PrivateRoute from './PrivateRoute';
 
 // Catalog routing
 const Catalog = Loadable(lazy(() => import('views/catalog')));
@@ -21,7 +21,7 @@ const Page = Loadable(lazy(() => import('views/page')));
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard')));
 
 // authentication routing (keycloak implimentation)
-const PrivateRoute = Loadable(lazy(() => import('routes/PrivateRoute')));
+//const PrivateRoute = Loadable(lazy(() => import('routes/PrivateRoute')));
 const AuthLoginKeycloak = Loadable(lazy(() => import('views/pages/authentication/auth-forms/AuthLoginKeycloak')));
 const AuthRegisterKeycloak = Loadable(lazy(() => import('views/pages/authentication/auth-forms/AuthRegisterKeycloak')));
 
@@ -36,6 +36,8 @@ const UtilsShadow = Loadable(lazy(() => import('views/utilities/Shadow')));
 
 // sample page routing
 const SamplePage = Loadable(lazy(() => import('views/sample-page')));
+
+
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -59,7 +61,9 @@ const AuthRoutes = {
     {
       path: '/page',
       element: (
-        <Page />
+        <PrivateRoute>
+          <Page />
+        </PrivateRoute>
       )
     },
     {
@@ -75,11 +79,19 @@ const AuthRoutes = {
         },
         {
           path: 'user-details',
-          element: <UserDetailsCard />
+          element:(
+            <PrivateRoute>
+              <UserDetailsCard />
+            </PrivateRoute>
+          )
         },
         {
           path: 'create-page',
-          element: <CreatePageCard />
+          element: (
+            <PrivateRoute>
+              <CreatePageCard />
+            </PrivateRoute>
+          )
         }
       ]
     },

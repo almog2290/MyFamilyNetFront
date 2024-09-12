@@ -1,27 +1,12 @@
 import {useEffect,useContext } from 'react';
 import {AuthContext } from '../context/AuthContext';
-import { useNavigate } from 'react-router'; 
+import { Navigate } from 'react-router-dom'; 
 
-const PrivateRoute = ({ component: Component }) => {
+const PrivateRoute = ({children}) => {
+  
   const { keycloak, isAuthenticated , isLoading } = useContext(AuthContext);
-
-  useEffect(() => {
-    if (!isLoading) {
-      if (!isAuthenticated) {
-        keycloak.login();
-      }
-    }
-  }, [isLoading]);
-
-
-  if(isAuthenticated)
-  {
-    return (
-      <Component />
-    );
-  }
-
-  return ;
+  return !isLoading && isAuthenticated ? children : <Navigate to="/pages/login" />;
+  
 };
 
 export default PrivateRoute;

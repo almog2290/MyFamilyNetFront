@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect , useContext } from 'react';
 import { AuthContext } from "context/AuthContext";
 
-import { useNavigate } from 'react-router-dom';
+import { redirect, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 // material-ui
@@ -58,7 +58,7 @@ const ProfileSection = () => {
   const anchorRef = useRef(null);
 
   const handleLogout = async () => {
-    isAuthenticated && keycloak.logout();
+    isAuthenticated && keycloak.logout({redirectUri: `${window.location.origin}`});
     console.log('Logout');
   };
 
