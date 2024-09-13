@@ -18,12 +18,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Setup Node.js environment
-      - uses: https://gitea.moglidev.xyz/actions/setup-node@v4
+      - uses: https://gitea.com/actions/setup-node@v4
         with:
           node-version: '20.15.0'
       
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: https://gitea.moglidev.xyz/actions/checkout@v4
+      - uses: https://gitea.com/actions/checkout@v4
 
       - name: Install pack cli (buildpacks)
         run: |
