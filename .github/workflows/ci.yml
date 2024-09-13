@@ -17,15 +17,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
 
       # Setup Node.js environment
       - uses: actions/setup-node@v4
         with:
           node-version: '20.15.0'
 
-      
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+
       - name: Install pack cli (buildpacks)
         run: |
             sudo add-apt-repository ppa:cncf-buildpacks/pack-cli -yy
