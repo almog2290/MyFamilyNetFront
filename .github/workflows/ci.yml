@@ -35,6 +35,7 @@ jobs:
             --env "BP_WEB_SERVER_ROOT=dist" \
             --env "BP_WEB_SERVER_ENABLE_PUSH_STATE=true" \
             --env "NODE_ENV=production" \ 
+            --env "BP_NODE_VERSION=20.15.0" \
             registry.moglidev.xyz/my-family-net-app:dev-1.0
 
       - name: Loging & Push to MogliDev (Registry) Hub
