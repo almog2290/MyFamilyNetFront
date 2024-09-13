@@ -26,7 +26,7 @@ jobs:
             sudo apt-get update -yy
             sudo apt-get install pack-cli -yy
 
-      - name: Build and push container image to registry
+      - name: Build container image to registry
         run: |
           pack build registry.moglidev.xyz/my-family-net-app:dev-1.0 \
             --buildpack paketo-buildpacks/web-servers \
