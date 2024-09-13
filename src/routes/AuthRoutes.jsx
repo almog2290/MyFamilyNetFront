@@ -22,12 +22,12 @@ const DashboardDefault = Loadable(lazy(() => import('views/dashboard')));
 
 // authentication routing (keycloak implimentation)
 //const PrivateRoute = Loadable(lazy(() => import('routes/PrivateRoute')));
-const AuthLoginKeycloak = Loadable(lazy(() => import('views/pages/authentication/auth-forms/AuthLoginKeycloak')));
-const AuthRegisterKeycloak = Loadable(lazy(() => import('views/pages/authentication/auth-forms/AuthRegisterKeycloak')));
+const AuthLoginKeycloak = Loadable(lazy(() => import('views/authentication/AuthLoginKeycloak')));
+const AuthRegisterKeycloak = Loadable(lazy(() => import('views/authentication/AuthRegisterKeycloak')));
 
 // authentication routing (local implimentation)
-const AuthLogin = Loadable(lazy(() => import('views/pages/authentication/Login')));
-const AuthRegister = Loadable(lazy(() => import('views/pages/authentication/Register')));
+// const AuthLogin = Loadable(lazy(() => import('views/pages/authentication/Login')));
+// const AuthRegister = Loadable(lazy(() => import('views/pages/authentication/Register')));
 
 // utilities routing
 const UtilsTypography = Loadable(lazy(() => import('views/utilities/Typography')));
