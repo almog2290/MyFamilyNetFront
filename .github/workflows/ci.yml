@@ -1,42 +1,61 @@
-name: NodeJS CI with paketo-buildpacks/web-servers
+name: NodeJS CI with buildx (Multi-arch)
 
 # Controls when the workflow will run (EVENTS)
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main" ]
+    branches: [ "buildXBased" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "buildXBased" ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+env:
+  REGISTRY_IMAGE: ${{ secrets.DOCKER_HUB_REG }}/my-family-net-app
+
 jobs:
   # This workflow contains a single job called "build"
   build:
-    runs-on: ubuntu-latest
+    runs-on: fedora-latest
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
+      
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Install pack cli (buildpacks)
+      - name: Get APP version
+        id: get_version
         run: |
-            sudo add-apt-repository ppa:cncf-buildpacks/pack-cli -yy
-            sudo apt-get update -yy
-            sudo apt-get install pack-cli -yy
+          VERSION=$(jq -r '.version' package.json)
+          echo "APP_VERSION=$VERSION" >> $GITHUB_ENV
 
-      - name: Build and push container image to registry
-        run: |
-          pack build registry.moglidev.xyz/my-family-net-app:dev-1.0 \
-            --buildpack paketo-buildpacks/web-servers \
-            --builder paketobuildpacks/builder-jammy-base \
-            --env "BP_WEB_SERVER=nginx" \
-            --env "BP_WEB_SERVER_ROOT=dist" \
-            --env "BP_WEB_SERVER_ENABLE_PUSH_STATE=true" \
-            --env "NODE_ENV=production"
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
-      - name: Loging & Push to MogliDev (Registry) Hub
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3        
+
+      - name: Login to container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ secrets.DOCKER_HUB_REG }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build & Push to MogliDev Registry (Multi-arch)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ secrets.DOCKER_HUB_REG }}/my-family-net-app:latest , ${{ secrets.DOCKER_HUB_REG }}/my-family-net-app:${{env.APP_VERSION}}
+          build-args: |
+            FAMLIYNET_KEYCLOAK_URL=${{vars.FAMLIYNET_KEYCLOAK_URL}}
+            FAMLIYNET_KEYCLOAK_REALM=${{vars.FAMLIYNET_KEYCLOAK_REALM}}
+            FAMLIYNET_KEYCLOAK_CLIENT_ID=${{vars.FAMLIYNET_KEYCLOAK_CLIENT_ID}}
+          
+
+      - name: Inspect image
         run: |
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login https://registry.moglidev.xyz  -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-          docker push registry.moglidev.xyz/my-family-net-app:dev-1.0
+          docker buildx imagetools inspect ${{ secrets.DOCKER_HUB_REG }}/my-family-net-app:${{ env.APP_VERSION }}

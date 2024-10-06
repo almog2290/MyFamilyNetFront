@@ -1,0 +1,8 @@
+:3000 {
+    root * /usr/share/caddy
+    file_server
+
+    handle_path /api/* {
+        reverse_proxy {$VITE_APP_API_IP}
+    } 
+}
