@@ -20,7 +20,7 @@ import DescriptionTwoToneIcon from '@mui/icons-material/DescriptionTwoTone';
 
 const Catalog = () => {
   const {keycloak,isAuthenticated} = useContext(AuthContext);
-  const {data : pages , isLoading, error} = useFetch('/social/public/pages')
+  const {data : pages , isLoading, error} = useFetch('/social/public/pages?page=0&size=10');
 
 
   return (
@@ -28,8 +28,19 @@ const Catalog = () => {
       <Grid item xs={12}>
        {error && <div> {error} </div>}
         <Grid container spacing={gridSpacing}>
+        {isAuthenticated && (
+              <Grid item xs={12} key={"auth"}>
+              <PageCreationCard 
+                {...{
+                  isLoading: isLoading,
+                  userId: keycloak?.subject,
+                  fullName : keycloak?.idTokenParsed?.name
+                }}
+                />
+              </Grid>
+            )}
             {pages?.map((page) => (
-              <Grid item sm={6} xs={12} md={6} lg={12} key={page.id}>
+              <Grid item xs={12} key={page.id}>
                 <PageCard 
                   {...{
                     isLoading: isLoading,
@@ -40,17 +51,6 @@ const Catalog = () => {
                 />
               </Grid>
             ))}
-            {isAuthenticated && (
-              <Grid item sm={6} xs={12} md={6} lg={12} key={"auth"}>
-              <PageCreationCard 
-                {...{
-                  isLoading: isLoading,
-                  userId: keycloak?.subject,
-                  fullName : keycloak?.idTokenParsed?.name
-                }}
-                />
-              </Grid>
-            )}
         </Grid>
       </Grid>
     </Grid>

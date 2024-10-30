@@ -75,7 +75,7 @@ const CommentSideButtons = ({ comment, keycloak , postId }) => {
     };
 
     const handleSaveClick = () => {
-        updateMutation.mutate({ commentId: comment.id, text: editedComment });
+        updateMutation.mutate({ commentId: comment.commentId, text: editedComment });
         setIsEditing(false);
     };
 

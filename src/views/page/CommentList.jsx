@@ -24,7 +24,7 @@ function CommentList({ postId }) {
     const { data: comments, isError, isPending } = useQuery({
         queryKey: ['comments', postId],
         queryFn: async () => {
-            const response = await axiosPrivate.get(`/social/comments/post/${postId}`);
+            const response = await axiosPrivate.get(`/social/posts/${postId}/comments?page=0&size=5`);
             console.log(response.data);
             return response.data;
         }
@@ -48,7 +48,7 @@ function CommentList({ postId }) {
         <NewComment postId={postId} />
         <List>
             {comments.map(comment => (
-                <React.Fragment key={comment.id}>
+                <React.Fragment key={comment.commentId}>
                     <ListItem 
                         secondaryAction={
                             <CommentSideButtons comment={comment} keycloak={keycloak} postId={postId} />
@@ -56,10 +56,10 @@ function CommentList({ postId }) {
                         alignItems="flex-start"
                     >
                     <ListItemAvatar>
-                        <Avatar alt={comment.user.name} src="/static/images/avatar/1.jpg" />
+                        <Avatar alt={comment.owner.name} src="/static/images/avatar/1.jpg" />
                     </ListItemAvatar>
                         <ListItemText
-                            primary={comment.user.name}
+                            primary={comment.owner.name}
                             secondary={
                                 <React.Fragment>
                                     {comment.comment}

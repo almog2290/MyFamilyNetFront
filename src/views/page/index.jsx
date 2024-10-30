@@ -31,7 +31,7 @@ function Page() {
     const {data: posts, isError , isPending} = useQuery({
         queryKey: ['posts', [id, name, desc]],
         queryFn: async () => {
-            const response = await axiosPrivate.get(`/social/posts/page/${id}`);
+            const response = await axiosPrivate.get(`/social/pages/${id}/posts?page=0&size=5`);
             console.log(response.data);
             return response.data;
         }
@@ -54,10 +54,10 @@ function Page() {
                     <Alert severity="error">Error fetching data</Alert> 
                 }
                 {posts && posts.map(post => (
-                    <Grid item key={post.id}>
+                    <Grid item key={post.postId}>
                         <SubCard title={<PostLine postData={post}/>}>
                             <Typography variant="overline">
-                                <CommentList postId={post.id}/>
+                                <CommentList postId={post.postId}/>
                             </Typography>
                         </SubCard>
                     </Grid>

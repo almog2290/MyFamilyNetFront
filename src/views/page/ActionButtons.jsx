@@ -10,7 +10,7 @@ const ActionButtons = ({ keycloak, comment, handleEditClick, deleteCommentAction
             <IconButton edge="end" aria-label="like">
                 <ThumbUpIcon />
             </IconButton>
-            {keycloak?.subject === comment?.user.id && (
+            {keycloak?.subject === comment?.owner.id && (
                 <>
                     <IconButton 
                         edge="end" 
@@ -21,7 +21,7 @@ const ActionButtons = ({ keycloak, comment, handleEditClick, deleteCommentAction
                         <EditIcon />
                     </IconButton>
                     <IconButton 
-                        onClick={() => deleteCommentAction(comment.id)} 
+                        onClick={() => deleteCommentAction(comment.commentId)} 
                         edge="end" 
                         aria-label="delete"
                         disabled={isEditing}

@@ -12,6 +12,9 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import PreviewIcon from '@mui/icons-material/Preview';
+import PeopleIcon from '@mui/icons-material/People';
+import PostAddIcon from '@mui/icons-material/PostAdd';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
@@ -41,17 +44,17 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     top: -160,
     right: -130
   },
-    button: {
+  button: {
     position: 'relative',
     zIndex: 2
   }
 }));
 
-
 // ==============================|| Catalog - PAGE CARD ||============================== //
 
-const PageCard = ({ isLoading, page, icon}) => {
+const PageCard = ({ isLoading, page, icon }) => {
   const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const navigate = useNavigate();
 
   const handleShow = () => {
@@ -67,7 +70,7 @@ const PageCard = ({ isLoading, page, icon}) => {
         <CardWrapper border={false} content={false}>
           <Box sx={{ p: 2 }}>
             <List sx={{ py: 0 }}>
-              <ListItem alignItems="center" disableGutters sx={{ py: 0 }}>
+              <ListItem alignItems="center" disableGutters sx={{ py: 0, flexDirection: isSmallScreen ? 'column' : 'row' }}>
                 <ListItemAvatar>
                   <Avatar
                     variant="rounded"
@@ -82,16 +85,36 @@ const PageCard = ({ isLoading, page, icon}) => {
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  sx={{ py: 0, mt: 0.45, mb: 0.45 }}
+                  sx={{ py: 0, mt: isSmallScreen ? 1 : 0.45, mb: isSmallScreen ? 1 : 0.45, textAlign: isSmallScreen ? 'center' : 'left' }}
                   primary={<Typography variant="h4">{page?.name}</Typography>}
                   secondary={
-                    <Typography variant="subtitle2" sx={{ color: 'grey.500', mt: 0.5 }}>
-                      {page?.description}
-                    </Typography>
+                    !isSmallScreen && (
+                      <Typography variant="subtitle2" sx={{ color: 'grey.500', mt: 0.5 }}>
+                        {page?.description}
+                      </Typography>
+                    )
                   }
                 />
-                <Button variant="contained" color="warning" endIcon={<PreviewIcon />} sx={{ ml: 2 }} onClick={handleShow}>
-                    Show
+                <Box sx={{ display: 'flex', alignItems: 'center', ml: isSmallScreen ? 0 : 2, mt: isSmallScreen ? 1 : 0 }}>
+                  <PeopleIcon sx={{ color: 'grey.500', mr: 1 }} />
+                  <Typography variant="body2" sx={{ color: 'grey.700', fontWeight: 'bold' }}>
+                    Followers: {page?.followers}
+                  </Typography>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', ml: isSmallScreen ? 0 : 2, mt: isSmallScreen ? 1 : 0 }}>
+                  <PostAddIcon sx={{ color: 'grey.500', mr: 1 }} />
+                  <Typography variant="body2" sx={{ color: 'grey.700', fontWeight: 'bold' }}>
+                    Posts: {page?.posts}
+                  </Typography>
+                </Box>
+                <Button
+                  variant="contained"
+                  color="warning"
+                  endIcon={<PreviewIcon />}
+                  sx={{ ml: isSmallScreen ? 0 : 2, mt: isSmallScreen ? 1 : 0 }}
+                  onClick={handleShow}
+                >
+                  Show
                 </Button>
               </ListItem>
             </List>
@@ -103,9 +126,9 @@ const PageCard = ({ isLoading, page, icon}) => {
 };
 
 PageCard.propTypes = {
-  icon: PropTypes.object,
+  isLoading: PropTypes.bool,
   page: PropTypes.object,
-  isLoading: PropTypes.bool
+  icon: PropTypes.node
 };
 
 export default PageCard;

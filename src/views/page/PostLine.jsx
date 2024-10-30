@@ -18,10 +18,10 @@ const PostLine = ({postData}) => {
     <>
     <ListItem alignItems="flex-start">
       <ListItemAvatar>
-        <Avatar alt={postData.user.name} src="/static/images/avatar/1.jpg" />
+        <Avatar alt={postData.ownerName} src="/static/images/avatar/1.jpg" />
       </ListItemAvatar>
       <ListItemText
-        primary={postData.user.name}
+        primary={postData.ownerName}
         secondary={
           <React.Fragment>
             {postData.description}
